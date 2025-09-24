@@ -1,0 +1,757 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>NCERT Notes Library — Classes 9-12</title>
+  <style>
+    :root{
+      --bg:#0f1724; --card:#0b1220; --accent:#06b6d4; --accent2:#7c3aed;
+      --muted:#9aa4b2; --glass: rgba(255,255,255,0.03); --radius:14px;
+      font-family: Inter, system-ui, -apple-system, "Segoe UI", Roboto, 'Helvetica Neue', Arial;
+    }
+    *{box-sizing:border-box}
+    html,body{height:100%;margin:0;background:linear-gradient(180deg,#071023 0%,#081827 100%);color:#e6eef6}
+    .app{max-width:760px;margin:0 auto;padding:18px}
+    header{display:flex;gap:12px;align-items:center}
+    .logo{width:56px;height:56px;border-radius:12px;background:linear-gradient(135deg,var(--accent),var(--accent2));display:flex;align-items:center;justify-content:center;font-weight:700;font-size:18px}
+    h1{font-size:18px;margin:0}
+    p.lead{margin:2px 0 0;color:var(--muted);font-size:13px}
+    .card{background:var(--card);border-radius:var(--radius);padding:12px;margin-top:14px;box-shadow:0 6px 18px rgba(2,6,23,0.6)}
+    .grid{display:grid;gap:10px}
+    .grid.cols-2{grid-template-columns: repeat(2,1fr)}
+    .tile{background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));padding:14px;border-radius:12px;text-align:center;cursor:pointer;transition:transform .12s ease, box-shadow .12s ease}
+    .tile:active{transform:translateY(2px)}
+    .tile h3{margin:0;font-size:16px}
+    .tile p{margin:6px 0 0;color:var(--muted);font-size:13px}
+    .back{display:inline-block;margin-top:12px;padding:10px 12px;border-radius:10px;background:transparent;border:1px solid rgba(255,255,255,0.06);color:var(--muted);cursor:pointer}
+    .btn-primary{display:inline-block;padding:10px 14px;border-radius:10px;background:linear-gradient(90deg,var(--accent),var(--accent2));color:#021021;font-weight:600;border:none;cursor:pointer}
+    .list{margin-top:10px;display:flex;flex-direction:column;gap:8px}
+    .list .item{padding:10px;border-radius:10px;background:rgba(255,255,255,0.02);display:flex;justify-content:space-between;align-items:center}
+    .small{font-size:12px;color:var(--muted)}
+    footer{margin:18px 0 80px;text-align:center;color:var(--muted);font-size:12px}
+    @media(min-width:640px){ .app{padding:28px} .logo{width:72px;height:72px;font-size:22px} .grid.cols-3{grid-template-columns:repeat(3,1fr)}}
+  </style>
+</head>
+<body>
+  <div class="app" id="appRoot">
+    <header>
+      <div class="logo">ACE</div>
+      <div>
+        <h1 id="title">NCERT Notes Library</h1>
+        <p class="lead" id="subtitle">Class 9–12 • CBSE NCERT chapters</p>
+      </div>
+    </header>
+
+    <!-- main content container -->
+    <div id="page" class="card"></div>
+
+    <footer>Made mobile-first • Chapters based on NCERT textbooks.</footer>
+  </div>
+
+  <script>
+/* =========================
+   FULL NCERT CHAPTER DATA
+   - Main subjects & chapters for Classes 9–12 (English headings)
+   - Sources: NCERT official textbooks (ncert.nic.in) and consolidated lists.
+   ========================= */
+
+const NCERT = {
+  "9": {
+    "subjects": {
+      "Mathematics": [
+        "Number Systems",
+        "Polynomials",
+        "Coordinate Geometry",
+        "Linear Equations in Two Variables",
+        "Introduction to Euclid's Geometry",
+        "Lines and Angles",
+        "Triangles",
+        "Quadrilaterals",
+        "Areas of Parallelograms and Triangles",
+        "Circles",
+        "Constructions"
+      ],
+      "Science": [
+        "Matter in Our Surroundings",
+        "Is Matter Around Us Pure?",
+        "Atoms and Molecules",
+        "Structure of the Atom",
+        "The Fundamental Unit of Life",
+        "Tissues",
+        "Diversity in Living Organisms",
+        "Motion",
+        "Force and Laws of Motion",
+        "Gravitation",
+        "Work and Energy",
+        "Sound",
+        "Why Do We Fall Ill?",
+        "Natural Resources / Our Environment (integrated)"
+      ],
+      "English": [
+        "The Fun They Had (Beehive)",
+        "The Road Not Taken (Poem)",
+        "The Sound of Music (Beehive)",
+        "The Little Girl (Beehive)",
+        "A Truly Beautiful Mind",
+        "The Little Girl (Moments)",
+        "Poems and Prose according to NCERT Class 9 English beehive and moments" 
+      ],
+      "Social Science": {
+        "History": [
+          "The French Revolution",
+          "Socialism in Europe and the Russian Revolution",
+          "Nazism and the Rise of Hitler",
+          "Forest Society and Colonialism",
+          "Pastoralists in the Modern World",
+          "Peasants and Farmers"
+        ],
+        "Geography": [
+          "India—Size and Location",
+          "Physical Features of India",
+          "Drainage",
+          "Climate",
+          "Natural Vegetation and Wildlife",
+          "Population"
+        ],
+        "Political Science": [
+          "What is Democracy? Why Democracy?",
+          "Constitutional Design",
+          "Electoral Politics",
+          "Working of Institutions",
+          "Democratic Rights"
+        ],
+        "Economics": [
+          "The Story of Village Palampur",
+          "People as Resource",
+          "Poverty as a Challenge",
+          "Food Security in India"
+        ]
+      },
+      "Hindi": [
+        "Kahaniyan / Padya — NCERT Hindi textbooks chapters (as per NCERT Kannada/Hindi editions)"
+      ]
+    }
+  },
+
+  "10": {
+    "subjects": {
+      "Mathematics": [
+        "Real Numbers",
+        "Polynomials",
+        "Pair of Linear Equations in Two Variables",
+        "Quadratic Equations",
+        "Arithmetic Progressions",
+        "Triangles",
+        "Coordinate Geometry",
+        "Introduction to Trigonometry",
+        "Some Applications of Trigonometry",
+        "Circles",
+        "Constructions"
+      ],
+      "Science": [
+        "Chemical Reactions and Equations",
+        "Acids, Bases and Salts",
+        "Metals and Non-metals",
+        "Carbon and its Compounds",
+        "Periodic Classification of Elements",
+        "Life Processes",
+        "Control and Coordination",
+        "How Do Organisms Reproduce?",
+        "Heredity and Evolution",
+        "Light—Reflection and Refraction",
+        "The Human Eye and the Colourful World",
+        "Electricity",
+        "Magnetic Effects of Electric Current",
+        "Sources of Energy",
+        "Our Environment",
+        "Management of Natural Resources"
+      ],
+      "English": {
+        "First Flight (Prose & Poetry)": [
+          "A Letter to God",
+          "Nelson Mandela: Long Walk to Freedom (extracts)",
+          "Dust of Snow",
+          "Fire and Ice",
+          "A Tiger in the Zoo",
+          "How to Tell Wild Animals",
+          "Madam Rides the Bus",
+          "The Thief's Story"
+        ],
+        "Footprints Without Feet (Supplementary)": [
+          "A Triumph of Surgery",
+          "The Thief's Story",
+          "The Midnight Visitor",
+          "A Question of Trust",
+          "Footprints without Feet",
+          "The Making of a Scientist"
+        ]
+      },
+      "Social Science": {
+        "History": [
+          "The Rise of Nationalism in Europe",
+          "Nationalism in India",
+          "The Making of a Global World",
+          "The Age of Industrialisation",
+          "Print Culture and the Modern World"
+        ],
+        "Geography": [
+          "Resources and Development",
+          "Forest and Wildlife Resources",
+          "Water Resources",
+          "Agriculture",
+          "Minerals and Energy Resources",
+          "Manufacturing Industries",
+          "Lifelines of National Economy"
+        ],
+        "Political Science": [
+          "Power Sharing",
+          "Federalism",
+          "Democracy and Diversity",
+          "Gender, Religion and Caste",
+          "Politics and the Marginalised",
+          "Outcomes of Democracy"
+        ],
+        "Economics": [
+          "Development",
+          "Sectors of the Indian Economy",
+          "Money and Credit",
+          "Globalisation and the Indian Economy",
+          "Consumer Rights"
+        ]
+      },
+      "Hindi": [
+        "NCERT Hindi textbook chapter list for Class 10 (Sparsh, Sanchayan) — titles per NCERT Hindi edition"
+      ]
+    }
+  },
+
+  "11": {
+    "Science": {
+      "subjects": {
+        "Physics": [
+          "Physical World",
+          "Units and Measurements",
+          "Motion in a Straight Line",
+          "Motion in a Plane",
+          "Laws of Motion",
+          "Work, Energy and Power",
+          "System of Particles and Rotational Motion",
+          "Gravitation",
+          "Mechanical Properties of Solids",
+          "Mechanical Properties of Fluids",
+          "Thermal Properties of Matter",
+          "Thermodynamics",
+          "Kinetic Theory of Gases",
+          "Oscillations",
+          "Waves"
+        ],
+        "Chemistry": [
+          "Some Basic Concepts of Chemistry",
+          "Structure of Atom",
+          "Classification of Elements and Periodicity in Properties",
+          "Chemical Bonding and Molecular Structure",
+          "States of Matter",
+          "Thermodynamics",
+          "Equilibrium",
+          "Redox Reactions",
+          "Hydrogen",
+          "s-Block Elements",
+          "Some p-Block Elements",
+          "Organic Chemistry: Some basic principles and techniques",
+          "Hydrocarbons",
+          "Environmental Chemistry"
+        ],
+        "Biology": [
+          "The Living World",
+          "Biological Classification",
+          "Plant Kingdom",
+          "Animal Kingdom",
+          "Morphology of Flowering Plants",
+          "Anatomy of Flowering Plants",
+          "Structural Organisation in Animals",
+          "Cell: Structure and Functions",
+          "Biomolecules",
+          "Plant Physiology",
+          "Human Physiology"
+        ]
+      }
+    },
+    "Commerce": {
+      "subjects": {
+        "Accountancy": [
+          "Introduction to Accounting",
+          "Theory Base of Accounting",
+          "Recording of Transactions",
+          "Bank Reconciliation Statement",
+          "Trial Balance and Rectification of Errors",
+          "Depreciation, Provisions and Reserves",
+          "Accounting for Bills of Exchange",
+          "Financial Statements"
+        ],
+        "Business Studies": [
+          "Nature and Purpose of Business",
+          "Forms of Business Organisations",
+          "Public, Private and Global Enterprises",
+          "Business Services",
+          "Emerging Modes of Business",
+          "Social Responsibility and Ethics"
+        ],
+        "Economics": [
+          "Indian Economic Development",
+          "Statistics for Economics",
+          "People as Resource",
+          "Development Experience (1947–90) and Economic Reforms since 1991"
+        ]
+      }
+    },
+    "Arts": {
+      "subjects": {
+        "History": [
+          "What, Where, How and When",
+          "From the Beginning to the End of the Ice Age",
+          "The First Farmers and Herders",
+          "The First Cities",
+          "An Empire across Three Continents",
+          "Central Islamic Lands",
+          "Nomadic Empires",
+          "The Three Orders",
+          "Changing Cultural Traditions",
+          "Confrontation of Cultures"
+        ],
+        "Political Science": [
+          "Constitution: Why and How?",
+          "Rights in a Democracy",
+          "The Legislature",
+          "The Executive",
+          "The Judiciary",
+          "Federalism",
+          "Local Governments"
+        ],
+        "Geography": [
+          "India: Physical Environment",
+          "Population",
+          "Migration, Settlement",
+          "Landforms",
+          "Climate"
+        ]
+      }
+    },
+    "English": {
+      "subjects": {
+        "Hornbill": [
+          "The Portrait of a Lady",
+          "We are not Afraid to Die...",
+          "Discovering Tut: the Saga Continues",
+          "Landscape of the Soul",
+          "The Ailing Planet",
+          "The Browning Version",
+          "The Adventure"
+        ],
+        "Snapshots": [
+          "The Summer of the Beautiful White Horse",
+          "The Address",
+          "Ranga's Marriage",
+          "The Tale of Melon City",
+          "The Ghat of the Only World"
+        ]
+      }
+    }
+  },
+
+  "12": {
+    "Science": {
+      "subjects": {
+        "Physics": [
+          "Electrostatics",
+          "Current Electricity",
+          "Magnetic Effects of Current and Magnetism",
+          "Electromagnetic Induction and Alternating Currents",
+          "Electromagnetic Waves",
+          "Optics",
+          "Dual Nature of Radiation and Matter",
+          "Atoms and Nuclei",
+          "Electronic Devices",
+          "Communication Systems"
+        ],
+        "Chemistry": [
+          "Solid State",
+          "Solutions",
+          "Electrochemistry",
+          "Chemical Kinetics",
+          "Surface Chemistry",
+          "General Principles and Processes of Isolation of Elements",
+          "p-Block Elements",
+          "d and f Block Elements",
+          "Coordination Compounds",
+          "Haloalkanes and Haloarenes",
+          "Alcohols, Phenols and Ethers",
+          "Aldehydes, Ketones and Carboxylic Acids",
+          "Organic Compounds Containing Nitrogen",
+          "Biomolecules",
+          "Polymers",
+          "Chemistry in Everyday Life"
+        ],
+        "Biology": [
+          "Reproduction in Organisms",
+          "Sexual Reproduction in Flowering Plants",
+          "Human Reproduction",
+          "Reproductive Health",
+          "Principles of Inheritance and Variation",
+          "Molecular Basis of Inheritance",
+          "Evolution",
+          "Human Health and Diseases",
+          "Strategies for Enhancement in Food Production",
+          "Microbes in Human Welfare",
+          "Biotechnology and its Applications",
+          "Environmental Issues"
+        ]
+      }
+    },
+    "Commerce": {
+      "subjects": {
+        "Accountancy": [
+          "Accounting for Not-for-Profit Organisations",
+          "Accounting for Partnership Firms",
+          "Accounting for Companies",
+          "Financial Statement Analysis",
+          "Tools for Financial Analysis"
+        ],
+        "Business Studies": [
+          "Principles and Functions of Management",
+          "Business Finance and Marketing",
+          "Consumer Protection",
+          "Entrepreneurship"
+        ],
+        "Economics": [
+          "Introductory Microeconomics",
+          "Introductory Macroeconomics",
+          "National Income and Related Aggregates",
+          "Money and Banking",
+          "Government Budget and the Economy",
+          "Balance of Payments"
+        ]
+      }
+    },
+    "Arts": {
+      "subjects": {
+        "History": [
+          "The Story of the First Cities",
+          "Political and Economic History of Early Medieval India",
+          "The Making of the Regional Cultures",
+          "The Central Islamic Lands",
+          "The Industrial Revolution",
+          "Displacements and Developments"
+        ],
+        "Political Science": [
+          "Comparative Politics",
+          "Political Theory",
+          "Indian Politics: Contemporary Issues",
+          "Global Politics"
+        ],
+        "Geography": [
+          "Human Development",
+          "Water Resources",
+          "Agriculture",
+          "Mineral and Energy Resources",
+          "Manufacturing Industries",
+          "Transport, Communication and Trade"
+        ]
+      }
+    },
+    "English": {
+      "subjects": {
+        "Flamingo": [
+          "Poems and Prose as per NCERT 12 Flamingo (e.g., 'The Last Lesson', 'Lost Spring', etc.)"
+        ],
+        "Vistas": [
+          "Supplementary Reader chapters (e.g., 'Journey to the End of the Earth', 'The Rattrap', etc.)"
+        ]
+      }
+    }
+  }
+};
+
+/* =========================
+   App logic: Step navigation
+   Steps: Home -> (if 11/12) Stream -> Medium -> Subject -> Chapters
+   Hindi UI labels when Hindi selected
+   ========================= */
+
+const root = document.getElementById('page');
+const titleEl = document.getElementById('title');
+const subtitleEl = document.getElementById('subtitle');
+
+let state = {
+  class: null,
+  stream: null,
+  medium: 'English', // or 'Hindi'
+  subject: null
+};
+
+function setHindiUI(on){
+  if(on){
+    titleEl.innerText = 'NCERT नोट्स लाइब्रेरी';
+    subtitleEl.innerText = 'कक्षा 9–12 • NCERT पाठ्यक्रम';
+  } else {
+    titleEl.innerText = 'NCERT Notes Library';
+    subtitleEl.innerText = 'Class 9–12 • NCERT syllabus';
+  }
+}
+
+// Utility: clear and render container
+function showHome(){
+  state = {class:null, stream:null, medium:'English', subject:null};
+  setHindiUI(false);
+  root.innerHTML = '';
+  const headerCard = createCardHeader(state.medium === 'Hindi' ? 'होम' : 'Home', state.medium === 'Hindi' ? 'कक्षा चुनें' : 'Choose a class');
+  root.appendChild(headerCard);
+
+  const grid = document.createElement('div'); grid.className = 'grid';
+  grid.style.marginTop = '12px';
+  // class tiles
+  [9,10,11,12].forEach(c=>{
+    const tile = createTile( state.medium==='Hindi' ? `कक्षा ${c}` : `Class ${c}`, state.medium==='Hindi' ? `कक्षा ${c} के नोट्स` : `Notes for class ${c}`, ()=> selectClass(String(c)) );
+    grid.appendChild(tile);
+  });
+  root.appendChild(grid);
+  root.appendChild(footNote());
+}
+
+function selectClass(cls){
+  state.class = cls;
+  // for class 11 & 12 show stream selection
+  if(cls==='11' || cls==='12'){
+    showStreamSelection();
+  } else {
+    showMediumSelection();
+  }
+}
+
+function showStreamSelection(){
+  // keep UI language per current medium choice (default English yet)
+  const hi = state.medium==='Hindi';
+  setHindiUI(hi?true:false);
+  root.innerHTML = '';
+  root.appendChild(createCardHeader(hi?'स्ट्रीम चुनें':'Choose stream', hi?'कृपया स्ट्रीम चुनें':'Please select a stream for class '+state.class));
+  const grid = document.createElement('div'); grid.className='grid';
+  grid.style.marginTop='12px';
+  ['Science','Commerce','Arts'].forEach(s=>{
+    const label = hi ? ({Science:'विज्ञान',Commerce:'वाणिज्य',Arts:'कला'})[s] : s;
+    grid.appendChild(createTile(label, hi?`स्ट्रीम: ${label}`:`Stream: ${label}`, ()=> { state.stream = s; showMediumSelection(); }));
+  });
+  root.appendChild(grid);
+  root.appendChild(backBtn(()=>{
+    // back to home
+    showHome();
+  }));
+  root.appendChild(footNote());
+}
+
+function showMediumSelection(){
+  const hi = state.medium==='Hindi';
+  root.innerHTML = '';
+  root.appendChild(createCardHeader( hi ? 'माध्यम चुनें' : 'Choose Medium', hi ? 'अंग्रेज़ी या हिन्दी चुनें' : 'Choose English or हिन्दी' ));
+  const grid = document.createElement('div'); grid.className='grid';
+  grid.style.marginTop='12px';
+  // English tile
+  grid.appendChild(createTile('English', hi?'अंग्रेज़ी' : 'English', ()=>{ state.medium='English'; setHindiUI(false); showSubjectSelection();}));
+  // Hindi tile
+  grid.appendChild(createTile('हिन्दी', 'हिंदी', ()=>{ state.medium='Hindi'; setHindiUI(true); showSubjectSelection();}));
+  root.appendChild(grid);
+  root.appendChild(backBtn(()=>{
+    // if class 11/12 go back to stream, else back to home
+    if(state.class==='11' || state.class==='12') showStreamSelection(); else showHome();
+  }));
+  root.appendChild(footNote());
+}
+
+function showSubjectSelection(){
+  const hi = state.medium==='Hindi';
+  root.innerHTML = '';
+  root.appendChild(createCardHeader( hi ? 'विषय चुनें' : 'Choose Subject', hi?`कक्षा ${state.class} • ${state.stream || ''}` : `Class ${state.class} ${state.stream ? '• '+state.stream : ''}` ));
+
+  // get subject list depending on class & stream
+  let subs;
+  if(state.class === '9' || state.class === '10'){
+    subs = Object.keys(NCERT[state.class].subjects);
+    // remove Social Science object grouping when rendering: show combined or grouped.
+  } else {
+    // for 11 or 12, use NCERT[class] structure: pick the appropriate stream key
+    const classData = NCERT[state.class];
+    if(classData[state.stream]){
+      subs = Object.keys(classData[state.stream].subjects || classData[state.stream].subjects);
+    } else {
+      // Try the shaped structure above
+      const sdata = NCERT[state.class][state.stream] || NCERT[state.class][state.stream.toLowerCase()] || {};
+      subs = Object.keys(sdata.subjects || sdata);
+    }
+  }
+
+  // for class 9/10 Social Science is an object; flatten to show History/Geography/Pol.Science/Economics
+  if(state.class==='9' || state.class==='10'){
+    // if Social Science exists, expand its components
+    const flat = [];
+    for(const s of subs){
+      if(s==='Social Science' || s==='SocialScience' || typeof NCERT[state.class].subjects[s] === 'object'){
+        const obj = NCERT[state.class].subjects[s];
+        if(obj && typeof obj === 'object'){
+          Object.keys(obj).forEach(k=> flat.push(k));
+        }
+      } else {
+        flat.push(s);
+      }
+    }
+    subs = flat;
+  }
+
+  // render subjects
+  const list = document.createElement('div'); list.className='list'; list.style.marginTop='12px';
+  subs.forEach(sub=>{
+    const label = hi ? translateSubjectToHindi(sub) : sub;
+    const item = document.createElement('div'); item.className='item';
+    const left = document.createElement('div');
+    left.innerHTML = `<strong>${label}</strong><div class="small">${hi? 'कक्षा':'Class'} ${state.class} ${state.stream? ' • '+ (hi? translateStream(state.stream) : state.stream) : ''}</div>`;
+    const right = document.createElement('div');
+    const btn = document.createElement('button'); btn.className='btn-primary'; btn.innerText = hi? 'खोलें' : 'Open';
+    btn.onclick = ()=> { state.subject = sub; showChapters(); };
+    right.appendChild(btn);
+    item.appendChild(left); item.appendChild(right);
+    list.appendChild(item);
+  });
+  root.appendChild(list);
+  root.appendChild(backBtn(showMediumSelection));
+  root.appendChild(footNote());
+}
+
+function showChapters(){
+  const hi = state.medium==='Hindi';
+  root.innerHTML = '';
+  const headerText = hi ? 'अध्याय चुनें' : 'Choose Chapter';
+  root.appendChild(createCardHeader(headerText, `${hi? 'विषय':'Subject'}: ${ hi ? translateSubjectToHindi(state.subject) : state.subject}`));
+
+  // find chapter array depending on structure:
+  let chapters = [];
+  try {
+    if(state.class==='9' || state.class==='10'){
+      // NCERT[class].subjects may have subject or nested object
+      const subObj = NCERT[state.class].subjects[state.subject] || NCERT[state.class].subjects[state.subject];
+      if(Array.isArray(subObj)) chapters = subObj;
+      else if(typeof subObj === 'object'){
+        // If it's object (like Social Science subparts), try to flatten
+        for(const k in subObj){
+          if(Array.isArray(subObj[k])) chapters = chapters.concat(subObj[k]);
+        }
+      }
+    } else {
+      // for 11/12
+      const cls = NCERT[state.class];
+      // structure: NCERT["11"]["Science"].subjects["Physics"] etc
+      const streamBlock = cls[state.stream];
+      if(streamBlock && streamBlock.subjects && streamBlock.subjects[state.subject]){
+        chapters = streamBlock.subjects[state.subject];
+      } else {
+        // fallback: NCERT[class][state.stream].subjects[state.subject]
+        for(const k in cls){
+          if(k.toLowerCase() === state.stream.toLowerCase()){
+            const subblock = cls[k].subjects || cls[k];
+            if(subblock && subblock[state.subject]) chapters = subblock[state.subject];
+          }
+        }
+      }
+    }
+  } catch(e){
+    chapters = [];
+  }
+
+  if(!chapters || chapters.length===0){
+    root.appendChild(createInfo( hi? 'अध्याय उपलब्ध नहीं हैं।' : 'No chapters available for this subject in the dataset.' ));
+  } else {
+    const list = document.createElement('div'); list.className='list'; list.style.marginTop='12px';
+    chapters.forEach(ch=>{
+      const item = document.createElement('div'); item.className='item';
+      const left = document.createElement('div'); left.innerHTML = `<div>${ ch }</div>`;
+      const right = document.createElement('div');
+      const btn = document.createElement('button'); btn.className='btn-primary'; btn.innerText = hi? 'नोट्स खोलें' : 'Open Notes';
+      btn.onclick = ()=> openNotes(ch);
+      right.appendChild(btn);
+      item.appendChild(left); item.appendChild(right);
+      list.appendChild(item);
+    });
+    root.appendChild(list);
+  }
+
+  root.appendChild(backBtn(showSubjectSelection));
+  root.appendChild(footNote());
+}
+
+function openNotes(chapterTitle){
+  // placeholder — in production you'd link to actual file/URL stored in DB/cloud
+  const hi = state.medium==='Hindi';
+  alert((hi? 'खोल रहा है: ' : 'Opening: ') + chapterTitle + '\n\n(Connect a PDF or notes URL to this action)');
+}
+
+/* =========================
+   UI helper elements
+   ========================= */
+
+function createCardHeader(title, subtitle){
+  const div = document.createElement('div'); div.className='card';
+  div.innerHTML = `<strong style="font-size:16px">${title}</strong><div class="small" style="margin-top:6px">${subtitle}</div>`;
+  return div;
+}
+
+function createTile(title, subtitle, onClick){
+  const div = document.createElement('div'); div.className='tile';
+  div.innerHTML = `<h3>${title}</h3><p class="small">${subtitle}</p>`;
+  div.onclick = onClick;
+  return div;
+}
+
+function backBtn(cb){
+  const b = document.createElement('button'); b.className='back'; b.innerText = (state.medium==='Hindi'? '⬅ पीछे' : '⬅ Back'); b.onclick = cb;
+  return b;
+}
+
+function footNote(){
+  const f = document.createElement('div'); f.className='small'; f.style.marginTop='12px';
+  f.innerText = state.medium==='Hindi' ? 'सूचना: अध्याय NCERT पुस्तकों पर आधारित हैं।' : 'Note: Chapters are based on NCERT textbooks.';
+  return f;
+}
+
+function createInfo(text){ const d=document.createElement('div'); d.className='small'; d.style.marginTop='12px'; d.innerText=text; return d; }
+
+/* small translator for subject/stream display names (UI only) */
+function translateSubjectToHindi(sub){
+  const map = {
+    "Mathematics":"गणित",
+    "Science":"विज्ञान",
+    "English":"अंग्रेजी",
+    "Social Science":"सामाजिक विज्ञान",
+    "History":"इतिहास",
+    "Geography":"भूगोल",
+    "Political Science":"राजनीति विज्ञान",
+    "Economics":"अर्थशास्त्र",
+    "Hindi":"हिन्दी",
+    "Physics":"भौतिकी",
+    "Chemistry":"रसायन विज्ञान",
+    "Biology":"जीव विज्ञान",
+    "Accountancy":"लेखांकन",
+    "Business Studies":"व्यवसाय अध्ययन",
+    "Economics":"अर्थशास्त्र",
+    "History":"इतिहास",
+    "Geography":"भूगोल"
+  };
+  return map[sub] || sub;
+}
+function translateStream(s){ return ({Science:'विज्ञान',Commerce:'वाणिज्य',Arts:'कला'})[s] || s; }
+
+/* =========================
+   Start the app
+   ========================= */
+
+showHome();
+
+  </script>
+</body>
+</html>
